@@ -37,12 +37,19 @@ JSON output:
 oss-maintainer-snapshot --repo vaguul/social-feed-inputs --format json
 ```
 
+Only show items updated on or after a date:
+
+```bash
+oss-maintainer-snapshot --repo vaguul/discord-command-controls --since 2026-06-01
+```
+
 ## Options
 
 | Option | Description |
 | --- | --- |
 | `--repo owner/name` | Repository to include. Can be repeated. |
 | `--limit number` | Max issues and PRs per repo. Defaults to `20`. |
+| `--since YYYY-MM-DD` | Keep only items updated on or after this UTC date. |
 | `--format markdown,json` | Output format. Defaults to `markdown`. |
 | `--help` | Print help. |
 

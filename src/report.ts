@@ -11,6 +11,15 @@ function sortByUpdated<T extends IssueItem>(items: T[]): T[] {
   });
 }
 
+function filterBySince<T extends IssueItem>(items: T[], since?: Date): T[] {
+  if (!since) {
+    return items;
+  }
+
+  const cutoff = since.getTime();
+  return items.filter((item) => Date.parse(item.updatedAt) >= cutoff);
+}
+
 function formatIssue(item: IssueItem): string {
   return `- #${item.number} ${item.title}${labelNames(item)} - ${item.url}`;
 }
@@ -25,13 +34,17 @@ function formatPullRequest(item: PullRequestItem): string {
   return `- #${item.number} ${item.title}${suffix}${labelNames(item)} - ${item.url}`;
 }
 
-export function buildReport(repos: RepoSnapshot[], now = new Date()): SnapshotReport {
+export function buildReport(
+  repos: RepoSnapshot[],
+  now = new Date(),
+  since?: Date
+): SnapshotReport {
   return {
     generatedAt: now.toISOString(),
     repos: repos.map((repo) => ({
       repo: repo.repo,
-      issues: sortByUpdated(repo.issues),
-      pullRequests: sortByUpdated(repo.pullRequests)
+      issues: sortByUpdated(filterBySince(repo.issues, since)),
+      pullRequests: sortByUpdated(filterBySince(repo.pullRequests, since))
     }))
   };
 }

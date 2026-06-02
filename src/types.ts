@@ -4,6 +4,7 @@ export interface CliOptions {
   repos: string[];
   limit: number;
   format: OutputFormat;
+  since?: Date;
 }
 
 export interface Label {

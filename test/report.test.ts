@@ -11,6 +11,8 @@ test("parseArgs accepts repeated repositories", () => {
     "vaguul/social-feed-inputs",
     "--limit",
     "5",
+    "--since",
+    "2026-06-01",
     "--format",
     "json"
   ]);
@@ -20,6 +22,7 @@ test("parseArgs accepts repeated repositories", () => {
     "vaguul/social-feed-inputs"
   ]);
   assert.equal(options.limit, 5);
+  assert.equal(options.since?.toISOString(), "2026-06-01T00:00:00.000Z");
   assert.equal(options.format, "json");
 });
 
@@ -83,6 +86,55 @@ test("buildReport sorts issues and pull requests by updatedAt descending", () =>
 
   assert.equal(report.repos[0]?.issues[0]?.number, 2);
   assert.equal(report.repos[0]?.pullRequests[0]?.number, 4);
+});
+
+test("buildReport filters issues and pull requests by since date", () => {
+  const report = buildReport(
+    [
+      {
+        repo: "vaguul/example",
+        issues: [
+          {
+            number: 1,
+            title: "Older issue",
+            updatedAt: "2026-05-31T23:59:59.000Z",
+            url: "https://example.test/issues/1"
+          },
+          {
+            number: 2,
+            title: "Recent issue",
+            updatedAt: "2026-06-01T00:00:00.000Z",
+            url: "https://example.test/issues/2"
+          }
+        ],
+        pullRequests: [
+          {
+            number: 3,
+            title: "Older PR",
+            updatedAt: "2026-05-31T23:59:59.000Z",
+            url: "https://example.test/pulls/3"
+          },
+          {
+            number: 4,
+            title: "Recent PR",
+            updatedAt: "2026-06-01T00:00:00.000Z",
+            url: "https://example.test/pulls/4"
+          }
+        ]
+      }
+    ],
+    new Date("2026-06-02T00:00:00.000Z"),
+    new Date("2026-06-01T00:00:00.000Z")
+  );
+
+  assert.deepEqual(
+    report.repos[0]?.issues.map((issue) => issue.number),
+    [2]
+  );
+  assert.deepEqual(
+    report.repos[0]?.pullRequests.map((pullRequest) => pullRequest.number),
+    [4]
+  );
 });
 
 test("formatJson returns stable pretty JSON", () => {
