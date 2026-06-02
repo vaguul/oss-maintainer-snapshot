@@ -1,6 +1,6 @@
 {
   "name": "oss-maintainer-snapshot",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Small GitHub CLI based snapshot tool for open source maintenance queues.",
   "type": "module",
   "bin": {

@@ -25,13 +25,25 @@ export interface PullRequestItem extends IssueItem {
   reviewDecision?: string;
 }
 
+export interface AttentionItem {
+  kind: "issue" | "pull_request";
+  number: number;
+  title: string;
+  url: string;
+  reasons: string[];
+}
+
 export interface RepoSnapshot {
   repo: string;
   issues: IssueItem[];
   pullRequests: PullRequestItem[];
 }
 
+export interface RepoReport extends RepoSnapshot {
+  attention: AttentionItem[];
+}
+
 export interface SnapshotReport {
   generatedAt: string;
-  repos: RepoSnapshot[];
+  repos: RepoReport[];
 }

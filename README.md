@@ -53,6 +53,15 @@ oss-maintainer-snapshot --repo vaguul/discord-command-controls --since 2026-06-0
 | `--format markdown,json` | Output format. Defaults to `markdown`. |
 | `--help` | Print help. |
 
+## Attention grouping
+
+The Markdown and JSON reports keep the raw issue and pull request lists visible,
+but also add a `Needs attention` group before them. Items appear there when:
+
+- a pull request requires review
+- a pull request has a non-clean merge state
+- an issue has labels such as `bug`, `security`, `regression`, `triage`, or `to-triage`
+
 ## Local development
 
 ```bash
