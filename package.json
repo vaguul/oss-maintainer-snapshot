@@ -1,0 +1,30 @@
+{
+  "name": "oss-maintainer-snapshot",
+  "version": "0.1.0",
+  "description": "Small GitHub CLI based snapshot tool for open source maintenance queues.",
+  "type": "module",
+  "bin": {
+    "oss-maintainer-snapshot": "./dist/src/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node --test \"dist/test/*.test.js\"",
+    "check": "npm run build && npm run test"
+  },
+  "keywords": [
+    "github",
+    "open-source",
+    "maintenance",
+    "cli",
+    "triage"
+  ],
+  "author": "Vaguul",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "typescript": "^5.9.3"
+  }
+}
