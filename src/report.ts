@@ -14,8 +14,7 @@ const attentionLabels = new Set([
   "regression",
   "security",
   "to-triage",
-  "triage",
-  "🔍 triage"
+  "triage"
 ]);
 
 function labelNames(item: IssueItem): string {

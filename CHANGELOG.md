@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.1.4 - 2026-06-04
+
+- Removed the emoji triage label alias to keep CI/security scan output ASCII-safe.
+- Updated the scheduled workflow example to install the latest GitHub release tag.
+
 ## v0.1.3 - 2026-06-04
 
 - Added `--output path` for writing reports directly to a file.

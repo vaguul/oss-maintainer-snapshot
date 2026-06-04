@@ -70,7 +70,7 @@ not currently published to npm. The package `prepare` script builds the CLI
 during that install:
 
 ```bash
-npm install --global github:vaguul/oss-maintainer-snapshot#v0.1.3
+npm install --global github:vaguul/oss-maintainer-snapshot#v0.1.4
 ```
 
 Authentication is still handled by the `gh` CLI. In GitHub Actions:

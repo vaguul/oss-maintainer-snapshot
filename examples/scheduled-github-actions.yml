@@ -22,7 +22,7 @@ jobs:
           node-version: 24
 
       - name: Install snapshot CLI
-        run: npm install --global github:vaguul/oss-maintainer-snapshot#v0.1.3
+        run: npm install --global github:vaguul/oss-maintainer-snapshot#v0.1.4
 
       - name: Generate Markdown report
         run: |
