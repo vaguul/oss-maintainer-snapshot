@@ -1,0 +1,40 @@
+name: Maintainer Snapshot
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 13 * * 1"
+
+permissions:
+  contents: read
+  issues: read
+  pull-requests: read
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.MAINTAINER_SNAPSHOT_TOKEN || github.token }}
+    steps:
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Install snapshot CLI
+        run: npm install --global github:vaguul/oss-maintainer-snapshot#v0.1.3
+
+      - name: Generate Markdown report
+        run: |
+          oss-maintainer-snapshot \
+            --repo owner/project \
+            --repo owner/another-project \
+            --limit 20 \
+            --since "$(date -u -d '14 days ago' +%F)" \
+            --output maintainer-snapshot.md
+
+      - name: Upload report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: maintainer-snapshot
+          path: maintainer-snapshot.md

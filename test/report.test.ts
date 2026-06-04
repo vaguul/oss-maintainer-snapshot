@@ -14,7 +14,9 @@ test("parseArgs accepts repeated repositories", () => {
     "--since",
     "2026-06-01",
     "--format",
-    "json"
+    "json",
+    "--output",
+    "snapshot.json"
   ]);
 
   assert.deepEqual(options.repos, [
@@ -24,6 +26,7 @@ test("parseArgs accepts repeated repositories", () => {
   assert.equal(options.limit, 5);
   assert.equal(options.since?.toISOString(), "2026-06-01T00:00:00.000Z");
   assert.equal(options.format, "json");
+  assert.equal(options.outputPath, "snapshot.json");
 });
 
 test("formatMarkdown prints empty queues clearly", () => {

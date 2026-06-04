@@ -21,10 +21,6 @@ that many maintainers already have authenticated.
 
 ## Usage
 
-```bash
-npx oss-maintainer-snapshot --repo owner/project --repo owner/another-project
-```
-
 Markdown output is the default:
 
 ```bash
@@ -43,6 +39,15 @@ Only show items updated on or after a date:
 oss-maintainer-snapshot --repo vaguul/discord-command-controls --since 2026-06-01
 ```
 
+Write the report to a file:
+
+```bash
+oss-maintainer-snapshot \
+  --repo vaguul/discord-command-controls \
+  --repo vaguul/social-feed-inputs \
+  --output maintainer-snapshot.md
+```
+
 ## Options
 
 | Option | Description |
@@ -51,7 +56,31 @@ oss-maintainer-snapshot --repo vaguul/discord-command-controls --since 2026-06-0
 | `--limit number` | Max issues and PRs per repo. Defaults to `20`. |
 | `--since YYYY-MM-DD` | Keep only items updated on or after this UTC date. |
 | `--format markdown,json` | Output format. Defaults to `markdown`. |
+| `--output path` | Write the report to a file instead of stdout. |
 | `--help` | Print help. |
+
+## Scheduled GitHub Actions usage
+
+You can run the snapshot on a schedule and upload the Markdown report as an
+artifact. See [`examples/scheduled-github-actions.yml`](examples/scheduled-github-actions.yml)
+for a copy-ready workflow.
+
+The workflow installs the tool from a GitHub release tag because this package is
+not currently published to npm. The package `prepare` script builds the CLI
+during that install:
+
+```bash
+npm install --global github:vaguul/oss-maintainer-snapshot#v0.1.3
+```
+
+Authentication is still handled by the `gh` CLI. In GitHub Actions:
+
+- `GITHUB_TOKEN` is enough for many public repository snapshots and current-repo
+  automation.
+- use a read-only personal access token stored as
+  `MAINTAINER_SNAPSHOT_TOKEN` when the workflow needs private repositories,
+  cross-organization access, or notification-aware results.
+- the token should only need read access to metadata, issues, and pull requests.
 
 ## Attention grouping
 

@@ -1,16 +1,18 @@
 #!/usr/bin/env node
+import { writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import { collectRepoSnapshot } from "./github.js";
 import { buildReport, formatJson, formatMarkdown } from "./report.js";
 import type { CliOptions, OutputFormat } from "./types.js";
 
-const usage = `Usage: oss-maintainer-snapshot --repo owner/name [--repo owner/other] [--limit 20] [--since YYYY-MM-DD] [--format markdown|json]
+const usage = `Usage: oss-maintainer-snapshot --repo owner/name [--repo owner/other] [--limit 20] [--since YYYY-MM-DD] [--format markdown|json] [--output report.md]
 
 Options:
   --repo owner/name       Repository to include. Can be repeated.
   --limit number          Max issues and PRs per repository. Default: 20.
   --since YYYY-MM-DD      Keep only items updated on or after this UTC date.
   --format markdown|json  Output format. Default: markdown.
+  --output path           Write the report to a file instead of stdout.
   --help                  Show this help text.
 `;
 
@@ -75,6 +77,12 @@ export function parseArgs(args: string[]): CliOptions {
       continue;
     }
 
+    if (arg === "--output") {
+      options.outputPath = readValue(args, index, arg);
+      index += 1;
+      continue;
+    }
+
     throw new Error(`Unknown argument: ${arg}`);
   }
 
@@ -93,7 +101,11 @@ function main(): void {
     );
     const report = buildReport(snapshots, new Date(), options.since);
     const output = options.format === "json" ? formatJson(report) : formatMarkdown(report);
-    process.stdout.write(output);
+    if (options.outputPath) {
+      writeFileSync(options.outputPath, output, "utf8");
+    } else {
+      process.stdout.write(output);
+    }
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     process.stderr.write(`${message}\n\n${usage}`);
